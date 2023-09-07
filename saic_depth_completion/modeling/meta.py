@@ -29,6 +29,11 @@ class MetaModel(torch.nn.Module):
         batch["raw_depth"][mask] = batch["raw_depth"][mask] - self.depth_mean
         batch["raw_depth"][mask] = batch["raw_depth"][mask] / self.depth_std
 
+        mask_gt = batch["gt_depth"] != 0
+        batch["gt_depth"][mask_gt] = batch["gt_depth"][mask_gt] - self.depth_mean
+        batch["gt_depth"][mask_gt] = batch["gt_depth"][mask_gt] / self.depth_std
+
+
         for k, v in batch.items():
             batch[k] = v.to(self.device)
 

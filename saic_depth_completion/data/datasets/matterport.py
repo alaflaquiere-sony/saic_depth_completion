@@ -5,14 +5,14 @@ import numpy as np
 from PIL import Image
 
 # ROOT = '/Vol1/dbstore/datasets/depth_completion/Matterport3D/'
-ROOT = "/Vol0/user/d.senushkin/datasets/matterport3d"
+ROOT = "/home/tomchollet/Documents/DepthCompletion/saic_depth_completion/"
 
 class Matterport:
     def __init__(
             self, root=ROOT, split="train", transforms=None
     ):
         self.transforms = transforms
-        self.data_root = os.path.join(root, "data")
+        self.data_root = os.path.join(root, "datasets/data")
         self.split_file = os.path.join(root, "splits", split + ".txt")
         self.data_list = self._get_data_list(self.split_file)
         self.color_name, self.depth_name, self.render_name = [], [], []

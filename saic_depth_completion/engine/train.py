@@ -8,7 +8,7 @@ from saic_depth_completion.engine.val import validate
 
 def train(
     model, trainloader, optimizer, val_loaders={}, scheduler=None, snapshoter=None, logger=None,
-    epochs=100, init_epoch=0,  logging_period=10, metrics={}, tensorboard=None, tracker=None
+    epochs=100, init_epoch=0,  logging_period=5, metrics={}, tensorboard=None, tracker=None
 ):
 
     # move model to train mode
@@ -62,9 +62,9 @@ def train(
             tensorboard.update(
                 {k: v.global_avg for k, v in metrics_meter.meters.items()}, tag="train", epoch=epoch
             )
-            tensorboard.add_figures(batch, post_pred, epoch=epoch)
+            # tensorboard.add_figures(batch, post_pred, epoch=epoch)
 
-        if snapshoter is not None and epoch % snapshoter.period == 0:
+        if snapshoter is not None and epoch%logging_period==0:
             snapshoter.save('snapshot_{}'.format(epoch))
 
         # validate

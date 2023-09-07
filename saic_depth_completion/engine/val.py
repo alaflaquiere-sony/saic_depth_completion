@@ -35,7 +35,7 @@ def validate(
 
         if tensorboard is not None:
             tensorboard.update(metric_state, tag=subset, epoch=epoch)
-            tensorboard.add_figures(batch, post_pred, tag=subset, epoch=epoch)
+            # tensorboard.add_figures(batch, post_pred, tag=subset, epoch=epoch)
 
         if tracker is not None:
             tracker.update(subset, metric_state)

@@ -1,2 +1,11 @@
 .idea
 old
+datasets
+logs
+results
+tensorboard
+original_weights
+saic_depth_completion.egg-info
+dist
+build
+images
