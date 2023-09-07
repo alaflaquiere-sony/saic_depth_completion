@@ -38,15 +38,11 @@ class Matterport:
                 color_f         = os.path.join(
                     scene,'undistorted_color_images', f'resize_{one_scene_name}_i{num_1}_{num_2}.jpg'
                 )
-                est_normal_f = os.path.join(
-                    scene, 'estimate_normal', f'resize_{one_scene_name}_d{num_1}_{num_2}_normal_est.png'
-                )
 
 
                 self.depth_name.append(raw_depth_f)
                 self.render_name.append(render_depth_f)
                 self.color_name.append(color_f)
-                self.normal_name.append(est_normal_f)
 
     def _get_data_list(self, filename):
         with open(filename, 'r') as f:
@@ -81,9 +77,6 @@ class Matterport:
         render_depth    = np.array(Image.open(self.render_name[index])) / 4000.
         depth           = np.array(Image.open(self.depth_name[index])) / 4000.
 
-        normals = np.array(Image.open(self.normal_name[index])).transpose([2, 0, 1])
-        normals = (normals - 90.) / 180.
-
         mask = np.zeros_like(depth)
         mask[np.where(depth > 0)] = 1
 
@@ -91,6 +84,5 @@ class Matterport:
             'color':        torch.tensor(color, dtype=torch.float32),
             'raw_depth':    torch.tensor(depth, dtype=torch.float32).unsqueeze(0),
             'mask':         torch.tensor(mask, dtype=torch.float32).unsqueeze(0),
-            'normals':      torch.tensor(normals, dtype=torch.float32).unsqueeze(0),
             'gt_depth':     torch.tensor(render_depth, dtype=torch.float32).unsqueeze(0),
         }
