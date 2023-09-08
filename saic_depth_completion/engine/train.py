@@ -8,7 +8,7 @@ from saic_depth_completion.engine.val import validate
 
 def train(
     model, trainloader, optimizer, val_loaders={}, scheduler=None, snapshoter=None, logger=None,
-    epochs=100, init_epoch=0,  logging_period=5, metrics={}, tensorboard=None, tracker=None
+    epochs=100, init_epoch=0,  logging_period=10, metrics={}, tensorboard=None, tracker=None
 ):
 
     # move model to train mode

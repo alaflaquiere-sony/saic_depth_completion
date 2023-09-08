@@ -34,6 +34,9 @@ def main():
     parser.add_argument(
         "--snapshot_period", default=10, type=int, help="Snapshot model one time over snapshot period"
     )
+    parser.add_argument(
+        "--weights", default="", type=str, metavar="FILE", help="path to config file"
+    )
     args = parser.parse_args()
 
     cfg = get_default_config(args.default_cfg)
@@ -64,6 +67,7 @@ def main():
         ])
     else:
         snapshoter, tensorboard, tracker = None, None, None
+    snapshoter.load(args.weights)
 
 
     metrics = {
