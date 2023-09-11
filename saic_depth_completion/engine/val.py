@@ -26,7 +26,7 @@ def validate(
 
             with torch.no_grad():
                 post_pred = model.postprocess(pred)
-                metrics_meter.update(post_pred, batch["gt_depth"])
+                metrics_meter.update(post_pred, batch["gt_depth"], batch["mask"])
 
         state = "Validate: ep: {}, subset -- {} | ".format(epoch, subset)
         logger.info(state + metrics_meter.suffix)

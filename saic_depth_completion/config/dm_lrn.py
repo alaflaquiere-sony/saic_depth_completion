@@ -15,8 +15,8 @@ _C.model.upsample = "bilinear"
 # include CRP blocks or not
 _C.model.use_crp = True
 # loss fn: list of tuple
-_C.model.criterion = [("LogDepthL1Loss", 1.0)]
-_C.model.predict_log_depth = True
+_C.model.criterion = [("DepthL1Loss", .5), ("DepthL2Loss", .5)]
+_C.model.predict_log_depth = False
 # mask encoder convolution's kernel size
 _C.model.mask_encoder_ksize = 3
 
@@ -37,10 +37,19 @@ _C.train = CN()
 # use standard scaler or not
 _C.train.rgb_mean = [0.485, 0.456, 0.406]
 _C.train.rgb_std = [0.229, 0.224, 0.225]
+# _C.train.rgb_mean = [0.49675, 0.481, 0.5077] # rs
+# _C.train.rgb_std = [0.04254, 0.04617, 0.04329] # rs
+# _C.train.rgb_mean = [0.4801, 0.39187, 0.41072] # Nyu
+# _C.train.rgb_std = [0.1102, 0.11776, 0.10655] # Nyu
 # standard scaler params for raw_depth
 _C.train.depth_mean = 2.1489
 _C.train.depth_std = 1.4279
-_C.train.batch_size = 32
+# _C.train.depth_mean = 2.79619 # Nyu
+# _C.train.depth_std = 0.81951 # Nyu
+# _C.train.depth_mean = 1.43617 # RS
+# _C.train.depth_std = 1.49279 # RS
+
+_C.train.batch_size = 24
 _C.train.lr = 0.0001
 
 _C.test = CN()
