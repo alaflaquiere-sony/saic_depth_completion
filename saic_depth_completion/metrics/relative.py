@@ -13,8 +13,9 @@ class DepthRel(nn.Module):
     def __init__(self, eps=1e-5):
         super(DepthRel, self).__init__()
         self.eps = eps
-    def forward(self, pred, gt):
-        mask = gt > self.eps
+    def forward(self, pred, gt, mask):
+        # mask = gt > self.eps
+        mask = mask > 0
         diff = torch.abs(gt[mask] - pred[mask]) / gt[mask]
         return diff.median()
 
@@ -23,8 +24,9 @@ class Miss(nn.Module):
         super(Miss, self).__init__()
         self.thresh = thresh
         self.eps = eps
-    def forward(self, pred, gt):
-        mask = (gt > self.eps)# & (pred > self.eps)
+    def forward(self, pred, gt, mask):
+        # mask = (gt > self.eps)# & (pred > self.eps)
+        mask = mask > 0
 
         pred_over_gt, gt_over_pred = pred[mask] / gt[mask], gt[mask] / pred[mask]
         miss_map = torch.max(pred_over_gt, gt_over_pred)
@@ -76,7 +78,7 @@ class SSIM(torch.nn.Module):
         else:
             return ssim_map.mean(1).mean(1).mean(1)
 
-    def forward(self, pred, gt):
+    def forward(self, pred, gt, mask):
 
         img1 = torch.zeros_like(pred)
         img2 = torch.zeros_like(gt)

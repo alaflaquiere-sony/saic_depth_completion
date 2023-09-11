@@ -49,8 +49,8 @@ class Meter:
     def reset(self):
         self.stats.reset()
 
-    def update(self, pred, gt):
-        value = self.metric_fn(pred, gt)
+    def update(self, pred, gt, mask):
+        value = self.metric_fn(pred, gt, mask)
         if isinstance(value, tuple):
             self.stats.update(value[0].cpu(), value[1])
         else:
@@ -78,9 +78,9 @@ class AggregatedMeter(object):
         for v in self.meters.values():
             v.reset()
 
-    def update(self, pred, gt):
+    def update(self, pred, gt, mask):
         for v in self.meters.values():
-            v.update(pred, gt)
+            v.update(pred, gt, mask)
 
     @property
     def suffix(self):

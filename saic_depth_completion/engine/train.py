@@ -44,7 +44,7 @@ def train(
 
             with torch.no_grad():
                 post_pred = model.postprocess(pred)
-                metrics_meter.update(post_pred, batch["gt_depth"])
+                metrics_meter.update(post_pred, batch["gt_depth"], batch["mask"])
 
             if (epoch * num_batches + it) % logging_period == 0:
                 state = "ep: {}, it {}/{} -- loss {:.4f}({:.4f}) | ".format(
