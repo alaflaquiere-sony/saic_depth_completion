@@ -41,8 +41,8 @@ class MetaModel(torch.nn.Module):
 
     def postprocess(self, input):
         return self.model.postprocess(input)
-    def criterion(self, pred, gt):
-        return self.model.criterion(pred, gt)
+    def criterion(self, pred, gt, mask):
+        return self.model.criterion(pred, gt, mask)
 
     def count_parameters(self):
         return sum(p.numel() for p in self.model.parameters() if p.requires_grad)

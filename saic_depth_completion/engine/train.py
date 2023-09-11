@@ -32,7 +32,7 @@ def train(
         for it, batch in enumerate(trainloader):
             batch = model.preprocess(batch)
             pred = model(batch)
-            loss = model.criterion(pred, batch["gt_depth"])
+            loss = model.criterion(pred, batch["gt_depth"], batch["mask"])
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()

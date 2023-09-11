@@ -10,6 +10,7 @@ from saic_depth_completion.modeling.blocks import AdaptiveBlock, MaskEncoder, Fu
 from saic_depth_completion.utils import registry
 from saic_depth_completion import ops
 from saic_depth_completion.metrics import LOSSES
+import math
 
 
 
@@ -103,20 +104,22 @@ class DM_LRN(nn.Module):
         if not self.predict_log_depth:
             self.act = ops.ACTIVATION_LAYERS[self.activation[0]](*self.activation[1])
 
-    def criterion(self, pred, gt):
+    def criterion(self, pred, gt, mask):
         total = 0
         for spec in self.losses:
             if len(spec) == 3:
                 loss_fn = LOSSES[spec[0]](*spec[2])
             else:
                 loss_fn = LOSSES[spec[0]]()
-            total += spec[1] * loss_fn(pred, gt)
+            total += spec[1] * loss_fn(pred, gt, mask)
         return total
 
     def postprocess(self, pred):
         if self.predict_log_depth:
-            return pred.exp()
-
+            results = pred.exp()
+            # results = math.sqrt(1.49279/1.4279) * (results - (2.1489 - math.sqrt(1.4279/1.49279)*1.43617))
+            return results
+        
         return pred
 
     def forward(self, batch):
