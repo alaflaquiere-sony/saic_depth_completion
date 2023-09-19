@@ -22,8 +22,8 @@ class BerHuLoss(nn.Module):
 
         diff = torch.abs(img1 - img2)
         threshold = self.scale * torch.max(diff).detach()
-        # mask = diff > threshold
-        diff[mask] = ((img1[mask]-img2[mask])**2 + threshold**2) / (2*threshold + self.eps)
+        mask_2 = diff > threshold
+        diff[mask_2] = ((img1[mask_2]-img2[mask_2])**2 + threshold**2) / (2*threshold + self.eps)
         return diff.sum() / diff.numel()
 
 
