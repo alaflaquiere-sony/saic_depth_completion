@@ -5,7 +5,7 @@ model:
   activation: ("LeakyReLU", [0.2, True] )
   upsample: "bilinear"
   use_crp: True
-  criterion: (("DepthL1Loss",  .5), ("DepthL2Loss",  .5), )
+  criterion: (("BerHuLoss",  1.0), )
   predict_log_depth: False
   mask_encoder_ksize: 3
 
@@ -17,5 +17,6 @@ model:
     multi_scale_output: True
 
 train:
-  batch_size: 24
+  # batch_size: 8
+  batch_size: 32
   lr: 0.0001

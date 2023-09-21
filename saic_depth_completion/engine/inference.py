@@ -60,7 +60,7 @@ def inference(
                             )
 
                         idx += 1
-                metrics_meter.update(post_pred, batch["gt_depth"], batch["mask"])
+                metrics_meter.update(post_pred, batch["gt_depth"], batch["mask2"])
         print('Mean inference time:', np.mean(inference_times[3:]))
 
         state = "Inference: subset -- {} | ".format(subset)

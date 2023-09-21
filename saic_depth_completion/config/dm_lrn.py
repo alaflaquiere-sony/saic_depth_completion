@@ -15,7 +15,7 @@ _C.model.upsample = "bilinear"
 # include CRP blocks or not
 _C.model.use_crp = True
 # loss fn: list of tuple
-_C.model.criterion = [("DepthL1Loss", .5), ("DepthL2Loss", .5)]
+_C.model.criterion = [("BerHuLoss", 1.0)]
 _C.model.predict_log_depth = False
 # mask encoder convolution's kernel size
 _C.model.mask_encoder_ksize = 3

@@ -5,7 +5,7 @@ import numpy as np
 from PIL import Image
 
 # ROOT = '/Vol1/dbstore/datasets/depth_completion/Matterport3D/'
-ROOT = "/home/tomchollet/Documents/DepthCompletion/saic_depth_completion/"
+ROOT = "/home/alienwareloanerubuntu/Documents/saic_depth_completion/"
 
 class Matterport:
     def __init__(
@@ -80,9 +80,13 @@ class Matterport:
         mask = np.zeros_like(depth)
         mask[np.where(depth > 0)] = 1
 
+        mask2 = np.zeros_like(render_depth)
+        mask2[np.where(render_depth > 0)] = 1
+
         return  {
             'color':        torch.tensor(color, dtype=torch.float32),
             'raw_depth':    torch.tensor(depth, dtype=torch.float32).unsqueeze(0),
             'mask':         torch.tensor(mask, dtype=torch.float32).unsqueeze(0),
+            'mask2':         torch.tensor(mask, dtype=torch.float32).unsqueeze(0),
             'gt_depth':     torch.tensor(render_depth, dtype=torch.float32).unsqueeze(0),
         }

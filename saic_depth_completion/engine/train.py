@@ -32,7 +32,7 @@ def train(
         for it, batch in enumerate(trainloader):
             batch = model.preprocess(batch)
             pred = model(batch)
-            loss = model.criterion(pred, batch["gt_depth"], batch["mask"])
+            loss = model.criterion(pred, batch["gt_depth"], batch["mask2"])
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
@@ -44,7 +44,7 @@ def train(
 
             with torch.no_grad():
                 post_pred = model.postprocess(pred)
-                metrics_meter.update(post_pred, batch["gt_depth"], batch["mask"])
+                metrics_meter.update(post_pred, batch["gt_depth"], batch["mask2"])
 
             if (epoch * num_batches + it) % logging_period == 0:
                 state = "ep: {}, it {}/{} -- loss {:.4f}({:.4f}) | ".format(
