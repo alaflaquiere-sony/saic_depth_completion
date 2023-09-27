@@ -37,6 +37,12 @@ def main():
     parser.add_argument(
         "--weights", default="", type=str, metavar="FILE", help="path to config file"
     )
+    parser.add_argument(
+        "--dataset", default="", type=str, metavar="FILE", help="path to dataset"
+    )    
+    parser.add_argument(
+        "--split", default="", type=str, metavar="FILE", help="path to spit"
+    )
     args = parser.parse_args()
 
     cfg = get_default_config(args.default_cfg)
@@ -82,7 +88,7 @@ def main():
         'ssim': SSIM(),
     }
 
-    train_dataset = Matterport(split="train")
+    train_dataset = Matterport(split="train", dataset_path=args.dataset, split_path=args.split)
     train_loader = torch.utils.data.DataLoader(
         dataset=train_dataset,
         batch_size=cfg.train.batch_size,
@@ -92,8 +98,8 @@ def main():
     )
 
     val_datasets = {
-        "val_matterport": Matterport(split="val"),
-        "test_matterport": Matterport(split="test"),
+        "val_matterport": Matterport(split="val", dataset_path=args.dataset, split_path=args.split),
+        "test_matterport": Matterport(split="test", dataset_path=args.dataset, split_path=args.split),
     }
     val_loaders = {
         k: torch.utils.data.DataLoader(

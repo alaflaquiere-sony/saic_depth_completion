@@ -9,11 +9,11 @@ from PIL import Image
 
 class Matterport:
     def __init__(
-            self, split="train", transforms=None
+            self, split="train", dataset_path="", split_path="", transforms=None
     ):
         self.transforms = transforms
-        self.data_root = os.path.join(os.path.abspath("datasets"), "data")
-        self.split_file = os.path.join(os.path.abspath("splits"), split + ".txt")
+        self.data_root = dataset_path
+        self.split_file = os.path.join(split_path, split + ".txt")
         self.data_list = self._get_data_list(self.split_file)
         self.color_name, self.depth_name, self.render_name = [], [], []
         self.normal_name = []
