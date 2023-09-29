@@ -4,10 +4,8 @@ import argparse
 
 from saic_depth_completion.data.datasets.matterport import Matterport
 from saic_depth_completion.data.datasets.realsense import Realsense
-from saic_depth_completion.data.datasets.rgbd_scenes import RGBD_Scenes
 from saic_depth_completion.data.datasets.completion_dataset import CompletionDataset
 from saic_depth_completion.data.datasets.nyuv2 import NyuV2
-from saic_depth_completion.data.datasets.nyuv2_test import NyuV2Test
 from saic_depth_completion.engine.inference import inference
 from saic_depth_completion.utils.tensorboard import Tensorboard
 from saic_depth_completion.utils.logger import setup_logger
@@ -62,51 +60,9 @@ def main():
     }
 
     test_datasets = {
-        "test_realsense": Realsense(split="test"),
-        # "test_rgbd_scenes": RGBD_Scenes(split="test"),
+        # "test_realsense": Realsense(split="test"),
         # "test_nyu": NyuV2(split="test"),
-        # "test_matterport": Matterport(split="test"),
-        #"official_nyu_test": NyuV2Test(split="official_test"),
-        #
-        # # first
-        # "1gr10pv1pd": NyuV2Test(split="1gr10pv1pd"),
-        # "1gr10pv2pd": NyuV2Test(split="1gr10pv2pd"),
-        # "1gr10pv5pd": NyuV2Test(split="1gr10pv5pd"),
-        #
-        # "1gr25pv1pd": NyuV2Test(split="1gr25pv1pd"),
-        # "1gr25pv2pd": NyuV2Test(split="1gr25pv2pd"),
-        # "1gr25pv5pd": NyuV2Test(split="1gr25pv5pd"),
-        #
-        # "1gr40pv1pd": NyuV2Test(split="1gr40pv1pd"),
-        # "1gr40pv2pd": NyuV2Test(split="1gr40pv2pd"),
-        # "1gr40pv5pd": NyuV2Test(split="1gr40pv5pd"),
-        #
-        # #second
-        # "4gr10pv1pd": NyuV2Test(split="4gr10pv1pd"),
-        # "4gr10pv2pd": NyuV2Test(split="4gr10pv2pd"),
-        # "4gr10pv5pd": NyuV2Test(split="4gr10pv5pd"),
-        #
-        # "4gr25pv1pd": NyuV2Test(split="4gr25pv1pd"),
-        # "4gr25pv2pd": NyuV2Test(split="4gr25pv2pd"),
-        # "4gr25pv5pd": NyuV2Test(split="4gr25pv5pd"),
-        #
-        # "4gr40pv1pd": NyuV2Test(split="4gr40pv1pd"),
-        # "4gr40pv2pd": NyuV2Test(split="4gr40pv2pd"),
-        # "4gr40pv5pd": NyuV2Test(split="4gr40pv5pd"),
-        #
-        # # third
-        # "8gr10pv1pd": NyuV2Test(split="8gr10pv1pd"),
-        # "8gr10pv2pd": NyuV2Test(split="8gr10pv2pd"),
-        # "8gr10pv5pd": NyuV2Test(split="8gr10pv5pd"),
-        #
-        # "8gr25pv1pd": NyuV2Test(split="8gr25pv1pd"),
-        # "8gr25pv2pd": NyuV2Test(split="8gr25pv2pd"),
-        # "8gr25pv5pd": NyuV2Test(split="8gr25pv5pd"),
-        #
-        # "8gr40pv1pd": NyuV2Test(split="8gr40pv1pd"),
-        # "8gr40pv2pd": NyuV2Test(split="8gr40pv2pd"),
-        # "8gr40pv5pd": NyuV2Test(split="8gr40pv5pd"),
-
+        "test_matterport": Matterport(split="test"),
     }
     test_loaders = {
         k: torch.utils.data.DataLoader(

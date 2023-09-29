@@ -29,6 +29,7 @@ class MetaModel(torch.nn.Module):
         batch["raw_depth"][mask] = batch["raw_depth"][mask] - self.depth_mean
         batch["raw_depth"][mask] = batch["raw_depth"][mask] / self.depth_std
 
+        # With non normalized output, comment this part
         mask_gt = batch["gt_depth"] != 0
         batch["gt_depth"][mask_gt] = batch["gt_depth"][mask_gt] - self.depth_mean
         batch["gt_depth"][mask_gt] = batch["gt_depth"][mask_gt] / self.depth_std

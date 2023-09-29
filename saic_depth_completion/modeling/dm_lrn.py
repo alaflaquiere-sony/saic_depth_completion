@@ -117,7 +117,6 @@ class DM_LRN(nn.Module):
     def postprocess(self, pred):
         if self.predict_log_depth:
             results = pred.exp()
-            # results = math.sqrt(1.49279/1.4279) * (results - (2.1489 - math.sqrt(1.4279/1.49279)*1.43617))
             return results
         
         return pred
