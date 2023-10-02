@@ -38,10 +38,10 @@ def main():
         "--weights", default="", type=str, metavar="FILE", help="path to config file"
     )
     parser.add_argument(
-        "--dataset", default="", type=str, metavar="FILE", help="path to dataset"
+        "--dataset", default="", type=str, help="path to dataset"
     )    
     parser.add_argument(
-        "--split", default="", type=str, metavar="FILE", help="path to spit"
+        "--split", default="", type=str, help="path to spit"
     )
     args = parser.parse_args()
 
@@ -96,7 +96,6 @@ def main():
         num_workers=4,
         collate_fn=default_collate
     )
-
     val_datasets = {
         "val_matterport": Matterport(split="val", dataset_path=args.dataset, split_path=args.split),
         "test_matterport": Matterport(split="test", dataset_path=args.dataset, split_path=args.split),

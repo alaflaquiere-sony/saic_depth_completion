@@ -4,7 +4,7 @@ model:
   activation: ("LeakyReLU", [0.2, True] )
   upsample: "bilinear"
   use_crp: True
-  criterion: (("LogDepthL1Loss",  1.0), )
+  criterion: (("BerHuLoss",  1.0), )
   predict_log_depth: True
 
 
@@ -16,3 +16,5 @@ model:
 train:
   batch_size: 16
   lr: 0.0001
+test:
+  batch_size: 4

@@ -30,12 +30,27 @@ _C.model.backbone.multi_scale_output = True
 
 # train parameters
 _C.train = CN()
-# use standard scaler or not
+
+# use different normalization parameters depending on the dataset
+
+# Matterport
 _C.train.rgb_mean = [0.485, 0.456, 0.406]
 _C.train.rgb_std = [0.229, 0.224, 0.225]
-# standard scaler params for raw_depth
 _C.train.depth_mean = 2.1489
 _C.train.depth_std = 1.4279
+
+# NYUv2
+# _C.train.rgb_mean = [0.4801, 0.39187, 0.41072]
+# _C.train.rgb_std = [0.1102, 0.11776, 0.10655]
+# _C.train.depth_mean = 2.79619
+# _C.train.depth_std = 0.81951
+
+# Realsense
+# _C.train.rgb_mean = [0.49675, 0.481, 0.5077]
+# _C.train.rgb_std = [0.04254, 0.04617, 0.04329]
+# _C.train.depth_mean = 1.43617
+# _C.train.depth_std = 1.49279
+
 _C.train.batch_size = 32
 _C.train.lr = 0.0001
 

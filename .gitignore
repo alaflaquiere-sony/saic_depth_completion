@@ -9,3 +9,5 @@ saic_depth_completion.egg-info
 dist
 build
 images
+splits
+trained_weight
