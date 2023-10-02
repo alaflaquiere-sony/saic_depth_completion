@@ -104,9 +104,9 @@ class NyuV2:
 
         return  {
             'color':        color,
-            'raw_color':        color,
+            'raw_color':        color, # Need non-normalized color image for viz
             'raw_depth':    raw_depth,
             'mask':         mask,
-            'mask2':         torch.ones(mask.shape),
+            'mask2':         torch.ones(mask.shape), # Need mask of the gt's missing depth
             'gt_depth':     gt_depth,
         }

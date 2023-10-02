@@ -18,47 +18,66 @@
 > **Abstract**: *Accurate depth map estimation is an essential step in scene spatial mapping for AR applications and 3D modeling. Current depth sensors provide time-synchronized depth and color images in real-time, but have limited range and suffer from missing and erroneous depth values on transparent or glossy surfaces. We investigate the task of depth completion that aims at improving the accuracy of depth measurements and recovering the missing depth values using additional information from corresponding color images. Surprisingly, we find that a simple baseline model based on modern encoder-decoder architecture for semantic segmentation achieves state-of-the-art accuracy on standard depth completion benchmarks. Then, we show that the accuracy can be further improved by taking into account a mask of missing depth values. The main contributions of our work are two-fold. First, we propose a modified decoder architecture, where features from raw depth and color are modulated by features from the mask via Spatially-Adaptive Denormalization (SPADE). Second, we introduce a new loss function for depth estimation based on direct comparison of log depth prediction with ground truth values. The resulting model outperforms current state-of-the-art by a large margin on the challenging Matterport3D dataset.*
 
 ## Installation
-This implementation is based on Python 3+ and Pytorch 1.4+. We provide two ways of setting up an environment. If you are using `Anaconda`, the following code performs necessary installation:
-```.bash
-conda env create -f environment.yaml
-conda activate depth-completion
-python setup.py install
-```
-The same procedure can be done with `pip`:
+
+To use this code, two ways of installing the necessary libraries are available:
+
+The forst one is to use `pip`:
+
 ```.bash
 pip3 install -r requirements.txt
 python setup.py install
 ```
 
+Or someone can create a conda environment. The original repo is providing the `environment.yaml` file for easy setup but it was not working for me. Using `Anaconda` is still recommanded but a manual installation of the libraries is need by going through the `enviromment.yaml` file.
+
+## Dataset
+
+
+
+## Pre-processing
+
+Before launching a training or testing script, please ensure that the pre-processing parameters are the one corresponding to you dataset.  This can be checked and changed in the file `saic_depth_completion/config/dm_lrn.py`. If you use a new dataset for training, please complute the normalization parameters and add them in this file for the pre-processing. 
+
 ## Training
-We provide a code for training on [Matterport3D](https://github.com/patrickwu2/Depth-Completion/blob/master/doc/data.md). Download Matterpord3D dataset and reorder your root folder as follows:
+
+For training, multiple scripts are provided depending on the dataset used. For Matterport, use `train_matterport.py`. And for NYUv2, use `train_nyu.py`. 
+
+Depending on wether or not the training in performed with normalized output, the training process changes slightly:
+
+For non-normalized training, the normalization of the output needs to be commented: 
+
+In `/saic_depth_completion/modeling/meta.py`, comment the following:
+
 ```bash
-ROOT/
-  ├── data/
-  └── splits/
-        ├── train.txt
-        ├── val.txt
-        └── test.txt 
+# With non normalized output, comment this part
+mask_gt = batch["gt_depth"] != 0
+batch["gt_depth"][mask_gt] = batch["gt_depth"][mask_gt] - self.depth_mean
+batch["gt_depth"][mask_gt] = batch["gt_depth"][mask_gt] / self.depth_std
 ```
-and `data` directory is should be configured in [this order](https://github.com/patrickwu2/Depth-Completion/blob/master/doc/data.md). Be sure that ROOT path in [matterport.py](https://github.sec.samsung.net/d-senushkin/saic_depth_completion_public/blob/master/saic_depth_completion/data/datasets/matterport.py) is valid. 
-Now you can start training with the following command:
+
+The command to perform the training then depends on the dataset used. All the experiments have been performed with the DM-LRN architecture with the efficientnet b3 backbone. 
+
 ```.bash
-# for LRN decoder with efficientnet-b4 backbone
-python train_matterport.py --default_cfg='LRN' --config_file='../configs/LRN_efficientnet-b4_lena.yaml' --postfix='example_lrn' 
-# for DM-LRN decoder with efficientnet-b4 backbone
-python train_matterport.py --default_cfg='DM-LRN' --config_file='../configs/DM-LRN_efficientnet-b4_pepper.yaml' --postfix='example_dm_lrn' 
+# for Matterport
+python train_matterport.py --default_cfg='DM-LRN' --config_file='../configs/DM-LRN_efficientnet-b3_jenifer.yaml' --weights='<pre-trained weights>' --dataset=<path the matterport dataset> --split=<path to the split folder>
+
+# for NYUv2
+python train_nyu.py --default_cfg='DM-LRN' --config_file='../configs/DM-LRN_efficientnet-b3_jenifer.yaml' --weights='<pre-trained weights>' --dataset=<path the matterport dataset> --split=<path to the split folder>
 ```
 
 ## Evaluation
-We provide scripts for evaluation on Matterport3D. If you need to perform test on NYUv2, see directly into a code since it may be changed in the future. Following instructions performs evaluation on Matterport3D test set:
+We provide scripts for evaluation od the results. 
+
+First, you need to modify the dataset on which the validation is performed by changing the `test_dataset` in the file `test_net.py`. Don't forget to also modify the pre-processing to adapt to the test dataset in `saic_depth_completion/config/dm_lrn.py`.
+
+Following instructions performs evaluation:
+
 ```.bash
-# for LRN decoder with efficientnet-b4 backbone
-python test_net.py --default_cfg='LRN' --config_file='../configs/LRN_efficientnet-b4_lena.yaml' --weights=<path to lrn_b4.pth>
-# for DM-LRN decoder with efficientnet-b4 backbone
-python test_net.py --default_cfg='DM-LRN' --config_file='../configs/DM-LRN_efficientnet-b4_pepper.yaml' --weights=<path to dm-lrn_b4.pth>
-# if you need to visualize the results just add --save_dir argument
-python test_net.py --default_cfg='DM-LRN' --config_file='../configs/DM-LRN_efficientnet-b4_pepper.yaml' --weights=<path to dm-lrn_b4.pth> --save_dir=<path to existing folder>
+python test_net.py --default_cfg='DM-LRN' --config_file='../configs/DM-LRN_efficientnet-b3_jenifer.yaml' --weights=<path to the weights> --save_dir=<path to existing folder> --dataset=<path the dataset> --split=<path to the split folder>
 ```
+
+Some point clouds as well as some visualization images will be saved in the `--save_dir` directory. To generate the point clouds for visualization, open3d needs the intrinsic parameters of the sensor. Modify those parameters in the file `saic_depth_completion/utils/visualize.py` if needed.
+
 
 ## Model ZOO
 This repository includes all models mentioned in original paper. 
@@ -93,6 +112,24 @@ This repository includes all models mentioned in original paper.
 [dm-lrn_b3]: https://github.com/saic-vul/saic_depth_completion/releases/download/v1.0/dm-lrn_b3.pth
 [dm-lrn_b4]: https://github.com/saic-vul/saic_depth_completion/releases/download/v1.0/dm-lrn_b4.pth
 [dm-lrn_b4_berhu]: https://github.com/saic-vul/saic_depth_completion/releases/download/v1.0/dm-lrn_b4_berhu.pth
+
+## SUPP
+
+We provide a code for training on [Matterport3D](https://github.com/patrickwu2/Depth-Completion/blob/master/doc/data.md). Download Matterpord3D dataset and reorder your root folder as follows:
+```bash
+ROOT/
+  ├── data/
+  └── splits/
+        ├── train.txt
+        ├── val.txt
+        └── test.txt 
+```
+
+
+and `data` directory is should be configured in [this order](https://github.com/patrickwu2/Depth-Completion/blob/master/doc/data.md). Be sure that ROOT path in [matterport.py](https://github.sec.samsung.net/d-senushkin/saic_depth_completion_public/blob/master/saic_depth_completion/data/datasets/matterport.py) is valid. 
+Now you can start training with the following command:
+
+
 
 ## License
 The code is released under the MPL 2.0 License. MPL is a copyleft license that is easy to comply with. You must make the source code for any of your changes available under MPL, but you can combine the MPL software with proprietary code, as long as you keep the MPL code in separate files.

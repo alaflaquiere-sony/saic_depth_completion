@@ -82,9 +82,9 @@ class Matterport:
 
         return  {
             'color':        torch.tensor(color, dtype=torch.float32),
-            'raw_color':        torch.tensor(color, dtype=torch.float32),
+            'raw_color':        torch.tensor(color, dtype=torch.float32), # Need non-normalized color image for viz
             'raw_depth':    torch.tensor(depth, dtype=torch.float32).unsqueeze(0),
             'mask':         torch.tensor(mask, dtype=torch.float32).unsqueeze(0),
-            'mask2':         torch.tensor(mask, dtype=torch.float32).unsqueeze(0),
+            'mask2':         torch.tensor(mask, dtype=torch.float32).unsqueeze(0), # Need mask of the gt's missing depth
             'gt_depth':     torch.tensor(render_depth, dtype=torch.float32).unsqueeze(0),
         }
