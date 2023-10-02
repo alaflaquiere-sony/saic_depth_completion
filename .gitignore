@@ -1,6 +1,6 @@
 .idea
 old
-datasets
+dataset
 logs
 results
 tensorboard

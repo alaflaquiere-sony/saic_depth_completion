@@ -31,6 +31,12 @@ def main():
     parser.add_argument(
         "--weights", default="", type=str, metavar="FILE", help="path to config file"
     )
+    parser.add_argument(
+        "--dataset", default="", type=str, help="path to dataset"
+    )    
+    parser.add_argument(
+        "--split", default="", type=str, help="path to spit"
+    )
 
     args = parser.parse_args()
 
@@ -60,9 +66,9 @@ def main():
     }
 
     test_datasets = {
-        # "test_realsense": Realsense(split="test"),
-        # "test_nyu": NyuV2(split="test"),
-        "test_matterport": Matterport(split="test"),
+        # "test_realsense": Realsense(split="test", dataset_path=args.dataset, split_path=args.split),
+        # "test_nyu": NyuV2(split="test", dataset_path=args.dataset, split_path=args.split),
+        "test_matterport": Matterport(split="test", dataset_path=args.dataset, split_path=args.split),
     }
     test_loaders = {
         k: torch.utils.data.DataLoader(

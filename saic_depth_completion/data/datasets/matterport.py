@@ -4,9 +4,6 @@ import torch
 import numpy as np
 from PIL import Image
 
-# ROOT = '/Vol1/dbstore/datasets/depth_completion/Matterport3D/'
-# ROOT = "/home/alienwareloanerubuntu/Documents/saic_depth_completion/"
-
 class Matterport:
     def __init__(
             self, split="train", dataset_path="", split_path="", transforms=None
@@ -85,6 +82,7 @@ class Matterport:
 
         return  {
             'color':        torch.tensor(color, dtype=torch.float32),
+            'raw_color':        torch.tensor(color, dtype=torch.float32),
             'raw_depth':    torch.tensor(depth, dtype=torch.float32).unsqueeze(0),
             'mask':         torch.tensor(mask, dtype=torch.float32).unsqueeze(0),
             'mask2':         torch.tensor(mask, dtype=torch.float32).unsqueeze(0),

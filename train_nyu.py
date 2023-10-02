@@ -38,6 +38,12 @@ def main():
     parser.add_argument(
         "--weights", default="", type=str, metavar="FILE", help="path to config file"
     )
+    parser.add_argument(
+        "--dataset", default="", type=str, help="path to dataset"
+    )    
+    parser.add_argument(
+        "--split", default="", type=str, help="path to spit"
+    )
     args = parser.parse_args()
 
     cfg = get_default_config(args.default_cfg)
@@ -83,7 +89,7 @@ def main():
         'ssim': SSIM(),
     }
 
-    train_dataset = NyuV2(split="train")
+    train_dataset = NyuV2(split="train", dataset_path=args.dataset, split_path=args.split)
     train_loader = torch.utils.data.DataLoader(
         dataset=train_dataset,
         batch_size=cfg.train.batch_size,
@@ -93,8 +99,8 @@ def main():
     )
 
     val_datasets = {
-        "val_matterport": Matterport(split="val"),
-        "test_nyu": NyuV2(split="test"),
+        "val_nyu": NyuV2(split="val", dataset_path=args.dataset, split_path=args.split),
+        "test_nyu": NyuV2(split="test", dataset_path=args.dataset, split_path=args.split),
     }
     val_loaders = {
         k: torch.utils.data.DataLoader(
