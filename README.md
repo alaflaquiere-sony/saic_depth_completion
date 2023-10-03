@@ -21,7 +21,7 @@
 
 To use this code, two ways of installing the necessary libraries are available:
 
-The forst one is to use `pip`:
+The first one is to use `pip`:
 
 ```.bash
 pip3 install -r requirements.txt
@@ -32,7 +32,34 @@ Or someone can create a conda environment. The original repo is providing the `e
 
 ## Dataset
 
+To train, two datasets have been used. Both are accessible if you follow the guidelines provided here.
 
+### Matterport
+
+For the Matterport dataset, it can be download from the [official website](https://github.com/niessner/Matterport) by sending signing the Terms of Use agreement form and send it to the google email in the website. It is only available for non-commercial academic use only.
+
+A [resized dataset](https://urldefense.com/v3/__https://drive.google.com/drive/folders/1qQ5nMFIdaTgFURBUZYTGTSvn5CELuWus?usp=sharing__;!!JmoZiZGBv3RvKRSx!8ZWSjFGwXccqysnK7jc1ew7KTCJ89j_XZnU8OIUBUarYzJhSjY9UxJjF4WPxBxs3Btsi4ZX1Tng-k8xpmNG4JhmddlIO7A$) is also available for download for everyone. This is the dataset used for training during my internship. Only the `color.zip`, `raw_depth.zip` and `GT_depth.zip` files are useful for this network, from both train and test folders. \
+After extracting the data, restructure the folder so that th data organization looks like this:
+```
+dataset/
+├── 17DRP5sb8fy
+│   ├── render_depth
+│   │   ├── resize_00ebbf3782c64d74aaf7dd39cd561175_d0_0_mesh_depth.png
+│   │   └── ...
+│   ├── undistorted_color_images
+│   │   ├── resize_00ebbf3782c64d74aaf7dd39cd561175_i0_0.jpg
+│   │   └── ...
+│   └── undistorted_depth_images
+│       ├── resize_00ebbf3782c64d74aaf7dd39cd561175_d0_0.png
+│       └── ...
+└─── 1LXtFkjw3qL
+     └── ...
+```
+You can now perform inference or training using the `train.txt`, `text.txt` and `val.txt` files from the `splits` folder. 
+
+### NYUv2
+
+For the NYUv2 dataset, the subset of data that can be use to train the network can be download from the [official website](https://cs.nyu.edu/~silberman/datasets/nyu_depth_v2.html), it's the `Labeled dataset`. Last time I check I couldn't download the dataset 
 
 ## Pre-processing
 
