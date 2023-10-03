@@ -59,7 +59,10 @@ You can now perform inference or training using the `train.txt`, `text.txt` and 
 
 ### NYUv2
 
-For the NYUv2 dataset, the subset of data that can be use to train the network can be download from the [official website](https://cs.nyu.edu/~silberman/datasets/nyu_depth_v2.html), it's the `Labeled dataset`. Last time I check I couldn't download the dataset 
+For the NYUv2 dataset, the subset of data that can be use to train the network can be download from the [official website](https://cs.nyu.edu/~silberman/datasets/nyu_depth_v2.html), it's the `Labeled dataset`. To process the dataset and extract the images and depth maps, you need additionnal tools. \
+My recommandation is to use the code from this [repo](https://github.com/yanyan-li/normal_depth_gt_of_NYU2). Yet, because the depth maps are extracted using the uint8 format, some information are lost into compression. For this reason, please use the `extractRGBD.py` script of this repo that use the uint32 format instead. 
+
+You can now perform inference or training using the `train_nyu.txt`, `text_nyu.txt` and `val_nyu.txt` files from the `splits` folder. 
 
 ## Pre-processing
 
@@ -107,7 +110,7 @@ Some point clouds as well as some visualization images will be saved in the `--s
 
 
 ## Model ZOO
-This repository includes all models mentioned in original paper. 
+This repository includes all models mentioned in original paper. Those model are performing the prediction with a non-normalized output. They only work with the Matterport dataset.
 
 | Backbone | Decoder<br>type   | Encoder<br>input | Training loss |      Link        |  Config |
 |----------|-----------|:-----:|:-------------:|:----------------:|:----------:|
@@ -140,23 +143,15 @@ This repository includes all models mentioned in original paper.
 [dm-lrn_b4]: https://github.com/saic-vul/saic_depth_completion/releases/download/v1.0/dm-lrn_b4.pth
 [dm-lrn_b4_berhu]: https://github.com/saic-vul/saic_depth_completion/releases/download/v1.0/dm-lrn_b4_berhu.pth
 
-## SUPP
 
-We provide a code for training on [Matterport3D](https://github.com/patrickwu2/Depth-Completion/blob/master/doc/data.md). Download Matterpord3D dataset and reorder your root folder as follows:
-```bash
-ROOT/
-  ├── data/
-  └── splits/
-        ├── train.txt
-        ├── val.txt
-        └── test.txt 
-```
+Some additionnal trained weights are available in the folder `trained_weights`. Those weights correspond to the training of the network with a normalized depth output. The Herbu loss is used for training.\
+They have been included in the repo using `git lfs`.
 
+- Matterport_norm_100.pth : DM-LRN b3 network re-trained on the Matterport dataset with normalized output. Training weights after iteration 100.
 
-and `data` directory is should be configured in [this order](https://github.com/patrickwu2/Depth-Completion/blob/master/doc/data.md). Be sure that ROOT path in [matterport.py](https://github.sec.samsung.net/d-senushkin/saic_depth_completion_public/blob/master/saic_depth_completion/data/datasets/matterport.py) is valid. 
-Now you can start training with the following command:
+- NYUv2_Norm_20.pth : DM-LRN b3 network fine-tuned after the Matterport training with normalized output. The fine-tuning process is done with the NYUv2 dataset and data augmentation (crop + flips). All the parameters of the network are optimized during the fine-tuning. Training weights after iteration 20.
 
-
+- NYUv2_Norm_50.pth : DM-LRN b3 network fine-tuned after the Matterport training with normalized output. The fine-tuning process is done with the NYUv2 dataset and data augmentation (crop + flips). All the parameters of the network are optimized during the fine-tuning. Training weights after iteration 50.
 
 ## License
 The code is released under the MPL 2.0 License. MPL is a copyleft license that is easy to comply with. You must make the source code for any of your changes available under MPL, but you can combine the MPL software with proprietary code, as long as you keep the MPL code in separate files.
