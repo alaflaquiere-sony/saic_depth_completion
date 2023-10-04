@@ -28,13 +28,13 @@ pip3 install -r requirements.txt
 python setup.py install
 ```
 
-Or someone can create a conda environment. The original repo is providing the `environment.yaml` file for easy setup but it took 12h for me when using:
+Or someone can create a conda environment. The original repo provides the `environment.yaml` file for easy setup but it took 12 hours for me when using:
 ```.bash
 conda env create -f environment.yaml
 conda activate depth-completion
 python setup.py install
 ```
-You can still create a virtual env by installing the dependencies from the yaml file. 
+You can still create a virtual environment by installing the dependencies from the yaml file. 
 
 ## Dataset
 
@@ -42,10 +42,10 @@ To train, two datasets have been used. Both are accessible if you follow the gui
 
 ### Matterport
 
-For the Matterport dataset, it can be download from the [official website](https://github.com/niessner/Matterport) by sending signing the Terms of Use agreement form and send it to the google email in the website. It is only available for non-commercial academic use only.
+The Matterport dataset can be downloaded from the [official website](https://github.com/niessner/Matterport) by signing the Terms of Use agreement form and sending it to the Google email on the website. It is only available for non-commercial academic use only.
 
-A [resized dataset](https://urldefense.com/v3/__https://drive.google.com/drive/folders/1qQ5nMFIdaTgFURBUZYTGTSvn5CELuWus?usp=sharing__;!!JmoZiZGBv3RvKRSx!8ZWSjFGwXccqysnK7jc1ew7KTCJ89j_XZnU8OIUBUarYzJhSjY9UxJjF4WPxBxs3Btsi4ZX1Tng-k8xpmNG4JhmddlIO7A$) is also available for download for everyone. This is the dataset used for training during my internship. Only the `color.zip`, `raw_depth.zip` and `GT_depth.zip` files are useful for this network, from both train and test folders. \
-After extracting the data, restructure the folder so that th data organization looks like this:
+A [resized dataset](https://urldefense.com/v3/__https://drive.google.com/drive/folders/1qQ5nMFIdaTgFURBUZYTGTSvn5CELuWus?usp=sharing__;!!JmoZiZGBv3RvKRSx!8ZWSjFGwXccqysnK7jc1ew7KTCJ89j_XZnU8OIUBUarYzJhSjY9UxJjF4WPxBxs3Btsi4ZX1Tng-k8xpmNG4JhmddlIO7A$) is also available for download for everyone. This is the dataset used for training during my internship. Only the `color.zip`, `raw_depth.zip`, and `GT_depth.zip` files are useful for this network, from both train and test folders. \
+After extracting the data, restructure the folder so that the data organization looks like this:
 ```
 dataset/
 ├── 17DRP5sb8fy
@@ -61,24 +61,24 @@ dataset/
 └─── 1LXtFkjw3qL
      └── ...
 ```
-You can now perform inference or training using the `train.txt`, `text.txt` and `val.txt` files from the `splits` folder. 
+You can now perform inference or training using the `train.txt`, `text.txt`, and `val.txt` files from the `splits` folder. 
 
 ### NYUv2
 
-For the NYUv2 dataset, the subset of data that can be use to train the network can be download from the [official website](https://cs.nyu.edu/~silberman/datasets/nyu_depth_v2.html), it's the `Labeled dataset`. To process the dataset and extract the images and depth maps, you need additionnal tools. \
-My recommandation is to use the code from this [repo](https://github.com/yanyan-li/normal_depth_gt_of_NYU2). Yet, because the depth maps are extracted using the uint8 format, some information are lost into compression. For this reason, please use the `extractRGBD.py` script of this repo that use the uint32 format instead. 
+For the NYUv2 dataset, the subset of data that can be used to train the network can be downloaded from the [official website](https://cs.nyu.edu/~silberman/datasets/nyu_depth_v2.html), it's the `Labeled dataset`. To process the dataset and extract the images and depth maps, you need additional tools. \
+My recommendation is to use the code from this [repo](https://github.com/yanyan-li/normal_depth_gt_of_NYU2). Yet, because the depth maps are extracted using the uint8 format, some information is lost during compression. For this reason, please use the `extractRGBD.py` script of this repo that uses the uint32 format instead. 
 
-You can now perform inference or training using the `train_nyu.txt`, `text_nyu.txt` and `val_nyu.txt` files from the `splits` folder. 
+You can now perform inference or training using the `train_nyu.txt`, `text_nyu.txt`, and `val_nyu.txt` files from the `splits` folder. 
 
 ## Pre-processing
 
-Before launching a training or testing script, please ensure that the pre-processing parameters are the one corresponding to you dataset.  This can be checked and changed in the file `saic_depth_completion/config/dm_lrn.py`. If you use a new dataset for training, please complute the normalization parameters and add them in this file for the pre-processing. 
+Before launching a training or testing script, please ensure that the pre-processing parameters are the ones corresponding to your dataset.  This can be checked and changed in the file `saic_depth_completion/config/dm_lrn.py`. If you use a new dataset for training, please compute the normalization parameters and add them to this file for the pre-processing. 
 
 ## Training
 
 For training, multiple scripts are provided depending on the dataset used. For Matterport, use `train_matterport.py`. And for NYUv2, use `train_nyu.py`. 
 
-Depending on wether or not the training in performed with normalized output, the training process changes slightly:
+Depending on whether or not the training is performed with normalized output, the training process changes slightly:
 
 For non-normalized training, the normalization of the output needs to be commented: 
 
@@ -102,11 +102,11 @@ python train_nyu.py --default_cfg='DM-LRN' --config_file='../configs/DM-LRN_effi
 ```
 
 ## Evaluation
-We provide scripts for evaluation od the results. 
+We provide scripts for the evaluation of the results. 
 
 First, you need to modify the dataset on which the validation is performed by changing the `test_dataset` in the file `test_net.py`. Don't forget to also modify the pre-processing to adapt to the test dataset in `saic_depth_completion/config/dm_lrn.py`.
 
-Following instructions performs evaluation:
+Following instructions perform the evaluation:
 
 ```.bash
 python test_net.py --default_cfg='DM-LRN' --config_file='../configs/DM-LRN_efficientnet-b3_jenifer.yaml' --weights=<path to the weights> --save_dir=<path to existing folder> --dataset=<path the dataset> --split=<path to the split folder>
@@ -116,7 +116,7 @@ Some point clouds as well as some visualization images will be saved in the `--s
 
 
 ## Model ZOO
-This repository includes all models mentioned in original paper. Those model are performing the prediction with a non-normalized output. They only work with the Matterport dataset.
+This repository includes all models mentioned in the original paper. Those models are performing the prediction with a non-normalized output. They only work with the Matterport dataset.
 
 | Backbone | Decoder<br>type   | Encoder<br>input | Training loss |      Link        |  Config |
 |----------|-----------|:-----:|:-------------:|:----------------:|:----------:|
@@ -150,7 +150,7 @@ This repository includes all models mentioned in original paper. Those model are
 [dm-lrn_b4_berhu]: https://github.com/saic-vul/saic_depth_completion/releases/download/v1.0/dm-lrn_b4_berhu.pth
 
 
-Some additionnal trained weights are available in the folder `trained_weights`. Those weights correspond to the training of the network with a normalized depth output. The Herbu loss is used for training.\
+Some additional trained weights are available in the folder `trained_weights`. Those weights correspond to the training of the network with a normalized depth output. The Herbu loss is used for training.\
 They have been included in the repo using `git lfs`.
 
 - Matterport_norm_100.pth : DM-LRN b3 network re-trained on the Matterport dataset with normalized output. Training weights after iteration 100.
@@ -163,7 +163,7 @@ They have been included in the repo using `git lfs`.
 The code is released under the MPL 2.0 License. MPL is a copyleft license that is easy to comply with. You must make the source code for any of your changes available under MPL, but you can combine the MPL software with proprietary code, as long as you keep the MPL code in separate files.
 
 ## Citation
-If you find this work is useful for your research, please cite our paper:
+If you find this work useful for your research, please cite our paper:
 ```
 @article{dmidc2020,
   title={Decoder Modulation for Indoor Depth Completion},
