@@ -98,7 +98,7 @@ def patchwise_polynomial_regression(source_img, reference_img, mask_img ,patch_s
     return output_img
 
 
-def post_process(source_img):
+def inverse_normalization(source_img):
     # Realsense coeffs
     post_process_image = source_img * 0.12419240655170437 + 0.4320115620826656
 
@@ -145,7 +145,7 @@ def inference(
                         # depth_post_pred = regression(np.array(post_pred[it].cpu())[0], np.array(batch["gt_depth"][it].cpu())[0], mask=np.array(batch["mask"][it].cpu())[0], degree=2)
 
                         # Post processing for the normalized network (that predicts normalized output)
-                        depth_post_pred = post_process(np.array(post_pred[it].cpu())[0])
+                        depth_post_pred = inverse_normalization(np.array(post_pred[it].cpu())[0])
 
                         visualize.save_pc_o3d(
                             batch["raw_color"][it], batch["color"][it], batch["raw_depth"][it],

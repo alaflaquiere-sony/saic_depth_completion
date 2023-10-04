@@ -74,6 +74,8 @@ You can now perform inference or training using the `train_nyu.txt`, `text_nyu.t
 
 Before launching a training or testing script, please ensure that the pre-processing parameters are the ones corresponding to your dataset.  This can be checked and changed in the file `saic_depth_completion/config/dm_lrn.py`. If you use a new dataset for training, please compute the normalization parameters and add them to this file for the pre-processing. 
 
+The parameters for the realsense images have been computed with the few images used at the time of the internship. It might be relevant to change them in the future. 
+
 ## Training
 
 For training, multiple scripts are provided depending on the dataset used. For Matterport, use `train_matterport.py`. And for NYUv2, use `train_nyu.py`. 
@@ -104,7 +106,23 @@ python train_nyu.py --default_cfg='DM-LRN' --config_file='../configs/DM-LRN_effi
 ## Evaluation
 We provide scripts for the evaluation of the results. 
 
-First, you need to modify the dataset on which the validation is performed by changing the `test_dataset` in the file `test_net.py`. Don't forget to also modify the pre-processing to adapt to the test dataset in `saic_depth_completion/config/dm_lrn.py`.
+First, you need to modify the dataset on which the validation is performed by changing the `test_dataset` in the file `test_net.py`. Don't forget to also modify the pre-processing to adapt to the test dataset in `saic_depth_completion/config/dm_lrn.py`.\
+Some post-processing can also be applied. This post-processing can either be regression, or applying the inverse transformation of the normalization used in pre-processing. All this can be controlled from the file `saic_depth_completion/engine/inference.py`.
+
+In the main inference loop, you can choose what post processing to use between regression, patchwise regression, and inverse normalization. For the regression, the degree is an additional parameter that can be modified. For inverse normalization, the coefficients have to be modified depending on the dataset the inference is being tested on. Please uncomment the good line of add the correct weights when using anither dataset. The parameters should match the one used in pre-processing. 
+
+```.bash
+def inverse_normalization(source_img):
+    # Realsense coeffs
+    post_process_image = source_img * 0.12419240655170437 + 0.4320115620826656
+
+    # Matterport coeffs
+    # post_process_image = source_img * 1.4279 + 2.1489
+
+    # NYUv2 coeffs
+    # post_process_image = source_img * 0.81951 + 2.79619
+    return post_process_image
+```
 
 Following instructions perform the evaluation:
 
