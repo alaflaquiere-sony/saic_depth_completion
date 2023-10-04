@@ -12,3 +12,4 @@ efficientnet_pytorch
 colorlog
 tensorboard
 opencv-python-headless
+open3d
