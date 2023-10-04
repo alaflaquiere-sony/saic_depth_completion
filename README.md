@@ -28,7 +28,13 @@ pip3 install -r requirements.txt
 python setup.py install
 ```
 
-Or someone can create a conda environment. The original repo is providing the `environment.yaml` file for easy setup but it was not working for me. Using `Anaconda` is still recommanded but a manual installation of the libraries is need by going through the `enviromment.yaml` file.
+Or someone can create a conda environment. The original repo is providing the `environment.yaml` file for easy setup but it took 12h for me when using:
+```.bash
+conda env create -f environment.yaml
+conda activate depth-completion
+python setup.py install
+```
+You can still create a virtual env by installing the dependencies from the yaml file. 
 
 ## Dataset
 
